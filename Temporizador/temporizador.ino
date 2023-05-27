@@ -9,9 +9,11 @@
 #define d 5
 #define e 6
 #define f 7
-#define g 8
+#define g 8 
 #define buzzer 9
-void disp7seg(int n) {
+bool estado1_anterior;
+bool estado2_anterior;
+void disp7seg(int n){
   // se asegura de que todos los pines estén en 0
   digitalWrite(a,0);
   digitalWrite(b,0);
@@ -44,7 +46,7 @@ void disp7seg(int n) {
   }
 }
 
-void setup {
+void setup(){
     pinMode(a, OUTPUT);
     pinMode(b, OUTPUT);
     pinMode(c, OUTPUT);
@@ -53,13 +55,13 @@ void setup {
     pinMode(f, OUTPUT);
     pinMode(g, OUTPUT);
     pinMode(buzzer, OUTPUT);
-    pinMode(2, INPUT);
-    pinMode(3, INPUT);
+    pinMode(10, INPUT);
+    pinMode(11, INPUT);
 }
 
-int n = 0 // n being the value that is added to the int shown on the display. can be either 1 or -1, switches to positive 1 when button 1 is pressed and to negative 1 when button 2 is pressed
-int i = 0 // i being the value that is shown on the display. can be any number between 0 and 9
-void loop {
+int n = 0; // n being the value that is added to the int shown on the display. can be either 1 or -1, switches to positive 1 when button 1 is pressed and to negative 1 when button 2 is pressed
+int i = 0 ;// i being the value that is shown on the display. can be any number between 0 and 9
+void loop(){
     bool estado1 = digitalRead(2);
     bool estado2 = digitalRead(3);
     if (estado1 and !estado1_anterior) {
@@ -72,11 +74,17 @@ void loop {
         i = 0;
     }
     if (i + n < 0) {
-        i = 9;
+      for (int j = 0; j < 5; j++) {
+        digitalWrite(buzzer, HIGH);
+        delay(200);
+        digitalWrite(buzzer, LOW);
+        delay(200);
+      }
+      i = 9;
     }
     i = i + n;
     disp7seg(i);
-    bool estado1_anterior = estado1;
-    bool estado2_anterior = estado2;
+    estado1_anterior = estado1;
+    estado2_anterior = estado2;
     delay(1000);
 }
