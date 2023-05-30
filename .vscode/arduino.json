@@ -1,0 +1,6 @@
+{
+    "sketch": "Basquet/Basquet.ino",
+    "board": "arduino:avr:uno",
+    "programmer": "avrisp",
+    "output": "./ArduinoOutput"
+}
