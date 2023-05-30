@@ -1,8 +1,10 @@
 
-//Crear un algoritmo para un Arduino conectado a un display 7 segmentos y un parlante el cual mediante dos botones implementados por "click" permita realizar las siguientes tareas:
-//1. Botón 1: al presionar debe incrementar la cuenta en 1 que se ve en el display hasta un máximo de 9. Si la cuenta se pasa de tal valor el número debe comenzar nuevamente en 0.
-//2. Botón 2: al presionar el display debe automáticamente comenzar a realizar una cuenta regresiva desde el valor que quedó seteado en el display hasta llegar a 0.
-//3. al terminar la cuenta regresiva debe sonar la alarma 5 veces para indicar que terminó la cuenta y quedar listo para volver a setear la nueva cuenta del punto 1.
+/*
+Realizar un algoritmo con dos display7seg que por medio de un pulsador comience una cuenta regresiva de 24 segundos y al finalizar, 
+suene un buzzer y quedar esperando que se presione nuevamente el pulsador para reiniciar la cuenta regresiva. 
+En cualquier momento que se presione el pulsador la cuenta debe reiniciar a 24 segundos y recomenzar la cuenta atrás. 
+Con un segundo pulsador, la cuenta debe poder pausarse y reanudarse en cualquier momento.
+*/
 #define LED_a 2
 #define LED_b 3
 #define LED_c 4
