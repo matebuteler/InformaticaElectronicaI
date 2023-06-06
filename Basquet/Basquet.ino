@@ -5,6 +5,14 @@ suene un buzzer y quedar esperando que se presione nuevamente el pulsador para r
 En cualquier momento que se presione el pulsador la cuenta debe reiniciar a 24 segundos y recomenzar la cuenta atrás. 
 Con un segundo pulsador, la cuenta debe poder pausarse y reanudarse en cualquier momento.
 */
+
+/*
+FALTA:
+- Eliminar la funcion buzzer (tiene que quedarse en HIGH el buzzer hasta que se presione el boton)
+- Definir todo al principio
+- Arreglar multiplex() (el orden y agregar el segundo delay)
+- Usar milis() en vez de delay() (el arduino deja de aceptar inputs durante el tiempo de delay() )
+*/
 #define LED_a 2
 #define LED_b 3
 #define LED_c 4
@@ -19,6 +27,10 @@ Con un segundo pulsador, la cuenta debe poder pausarse y reanudarse en cualquier
 #define boton2 14
 #include <Arduino.h>
 
+bool counting;
+bool estado1;
+bool estado2; 
+int i = 24; // i being the value shown on the display (0-24)
 bool estado1_anterior;
 bool estado2_anterior;
 void disp7seg(int n){
@@ -92,11 +104,10 @@ void buzz(int n) {
 
 // BOTON 1: Comienza cuenta regresiva desde 24
 // BOTON 2: Pausa y reanuda cuenta regresiva
-bool counting; 
-int i = 24; // i being the value shown on the display (0-24)
+
 void loop(){
-    bool estado1 = digitalRead(boton1);
-    bool estado2 = digitalRead(boton2);
+    estado1 = digitalRead(boton1);
+    estado2 = digitalRead(boton2);
     if (estado1 and !estado1_anterior) {
         i = 24;
         counting = true;
