@@ -8,10 +8,10 @@ Con un segundo pulsador, la cuenta debe poder pausarse y reanudarse en cualquier
 
 /*
 FALTA:
-- Eliminar la funcion buzzer (tiene que quedarse en HIGH el buzzer hasta que se presione el boton)
-- Definir todo al principio
-- Arreglar multiplex() (el orden y agregar el segundo delay)
-- Usar milis() en vez de delay() (el arduino deja de aceptar inputs durante el tiempo de delay() )
+(LISTO) - Eliminar la funcion buzzer (tiene que quedarse en HIGH el buzzer hasta que se presione el boton)
+(LISTO) - Definir todo al principio
+(LISTO) - Arreglar multiplex() (el orden y agregar el segundo delay)
+(LISTO) - Usar milis() en vez de delay() (el arduino deja de aceptar inputs durante el tiempo de delay() )
 */
 #define LED_a 2
 #define LED_b 3
@@ -30,9 +30,10 @@ FALTA:
 bool counting;
 bool estado1;
 bool estado2; 
-int i = 24; // i being the value shown on the display (0-24)
+int disp = 24; //numero en el display
 bool estado1_anterior;
 bool estado2_anterior;
+
 void disp7seg(int n){
   // se asegura de que todos los pines estén en 0
   digitalWrite(LED_a,0);
@@ -69,13 +70,14 @@ void disp7seg(int n){
 void multiplex(int n) {
     int decena = n/10;
     int unidad = n%10;
+    disp7seg(decena);
     digitalWrite(com1, HIGH); //turns on the first display
     digitalWrite(com2, LOW); // off second display
-    disp7seg(decena);
     delay(5);
+    disp7seg(unidad);
     digitalWrite(com1, LOW); //turns off the first display
     digitalWrite(com2, HIGH); //turns on the second display
-    disp7seg(unidad);
+    delay(5)
 }
 
 void setup(){
@@ -91,23 +93,17 @@ void setup(){
     pinMode(com2, OUTPUT);
     pinMode(boton1, INPUT);
     pinMode(boton2, INPUT);
-}
-void buzz(int n) {
-    for (int i = 0; i < n; i++) {
-        digitalWrite(buzzer, HIGH);
-        delay(200);
-        digitalWrite(buzzer, LOW);
-        delay(200);
-    }
-    
-}   
+}  
 
 // BOTON 1: Comienza cuenta regresiva desde 24
 // BOTON 2: Pausa y reanuda cuenta regresiva
 
+double t = millis()
+
 void loop(){
     estado1 = digitalRead(boton1);
     estado2 = digitalRead(boton2);
+
     if (estado1 and !estado1_anterior) {
         i = 24;
         counting = true;
@@ -117,14 +113,14 @@ void loop(){
             counting = !counting;
         }
     
-    while (counting) {
-        multiplex(i);
-        if (i == 0) {
-            buzz(5);
+    if (counting and millis() - t = disp*1000) {
+        digitalWrite(buzzer,LOW);
+        multiplex(disp);
+        if (disp == 0) {
+            digitalWrite(buzzer, HIGH);
             counting = false;
         }
-        i--;
-        delay(1000);
+        disp--;
     }
     estado1_anterior = estado1;
     estado2_anterior = estado2;
