@@ -6,25 +6,18 @@ En cualquier momento que se presione el pulsador la cuenta debe reiniciar a 24 s
 Con un segundo pulsador, la cuenta debe poder pausarse y reanudarse en cualquier momento.
 */
 
-/*
-FALTA:
-(LISTO) - Eliminar la funcion buzzer (tiene que quedarse en HIGH el buzzer hasta que se presione el boton)
-(LISTO) - Definir todo al principio
-(LISTO) - Arreglar multiplex() (el orden y agregar el segundo delay)
-(LISTO) - Usar milis() en vez de delay() (el arduino deja de aceptar inputs durante el tiempo de delay() )
-*/
-#define LED_a 2
-#define LED_b 3
-#define LED_c 4
-#define LED_d 5
-#define LED_e 6
-#define LED_f 7
-#define LED_g 8 
-#define buzzer 9
-#define com1 10
-#define com2 11
-#define boton1 12
-#define boton2 14
+#define LED_a 6
+#define LED_b 7
+#define LED_c 8
+#define LED_d 9
+#define LED_e 10
+#define LED_f 11
+#define LED_g 12
+#define buzzer 13
+#define com1 4
+#define com2 5
+#define boton1 2
+#define boton2 3
 #include <Arduino.h>
 
 bool counting;
@@ -73,11 +66,11 @@ void multiplex(int n) {
     disp7seg(decena);
     digitalWrite(com1, HIGH); //turns on the first display
     digitalWrite(com2, LOW); // off second display
-    delay(5);
+    delay(10);
     disp7seg(unidad);
     digitalWrite(com1, LOW); //turns off the first display
     digitalWrite(com2, HIGH); //turns on the second display
-    delay(5)
+    delay(10);
 }
 
 void setup(){
@@ -98,14 +91,14 @@ void setup(){
 // BOTON 1: Comienza cuenta regresiva desde 24
 // BOTON 2: Pausa y reanuda cuenta regresiva
 
-double t = millis()
+double t = millis();
 
 void loop(){
     estado1 = digitalRead(boton1);
     estado2 = digitalRead(boton2);
 
     if (estado1 and !estado1_anterior) {
-        i = 24;
+        disp = 24;
         counting = true;
     }
 
@@ -113,7 +106,7 @@ void loop(){
             counting = !counting;
         }
     
-    if (counting and millis() - t = disp*1000) {
+    if (counting and millis() - t >= disp * 1000) {
         digitalWrite(buzzer,LOW);
         multiplex(disp);
         if (disp == 0) {
