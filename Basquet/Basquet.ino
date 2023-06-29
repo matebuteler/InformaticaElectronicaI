@@ -6,21 +6,25 @@ En cualquier momento que se presione el pulsador la cuenta debe reiniciar a 24 s
 Con un segundo pulsador, la cuenta debe poder pausarse y reanudarse en cualquier momento.
 */
 
-#define LED_a 6
-#define LED_b 7
-#define LED_c 8
-#define LED_d 9
-#define LED_e 10
-#define LED_f 11
-#define LED_g 12
-#define buzzer 13
-#define com1 4
-#define com2 5
-#define boton1 2
-#define boton2 3
+
+
+#define LED_a 0
+#define LED_b 1
+#define LED_c 2
+#define LED_d 3
+#define LED_e 4
+#define LED_f 5
+#define LED_g 6
+#define buzzer 11
+#define com1 7
+#define com2 8
+#define boton1 9
+#define boton2 10
 #include <Arduino.h>
 
-bool counting;
+unsigned long lastTime = 0;
+
+bool counting = false;
 bool estado1;
 bool estado2; 
 int disp = 24; //numero en el display
@@ -37,40 +41,27 @@ void disp7seg(int n){
   digitalWrite(LED_f,0);
   digitalWrite(LED_g,0);
 
-  if (n!=1 and n!=6) {
-    digitalWrite(LED_a,1);
+  digitalWrite(LED_a, (n != 1 && n != 6 && n != 4));
+  digitalWrite(LED_b, (n != 5 && n != 6));
+  digitalWrite(LED_c, (n != 2));
+  digitalWrite(LED_d, (n != 1 && n != 4 && n != 7 && n != 9));
+  digitalWrite(LED_e, (n != 1 && n != 3 && n != 4 && n != 5 && n != 7 && n != 9));
+  digitalWrite(LED_f, (n != 1 && n != 2 && n != 3 && n != 7));
+  digitalWrite(LED_g, (n != 0 && n != 1 && n != 7));
   }
-  if (n!=5 and n!=6) {
-    digitalWrite(LED_b,1);
-  }
-  if (n!=2) {
-    digitalWrite(LED_c,1);
-  }
-  if (n!=1 and n!=4 and n!=7 and n!=9) {
-    digitalWrite(LED_d,1);
-  }
-  if (n!=1 and n!=3 and n!=4 and n!=5 and n!=7 and n!=9) {
-    digitalWrite(LED_e,1);
-  }
-  if (n!=1 and n!=2 and n!=3 and n!=7){
-    digitalWrite(LED_f,1);
-  }
-  if (n!= 0 and n!=1 and n!=7) {
-    digitalWrite(LED_g,1);
-  }
-}
 
-void multiplex(int n) {
+
+void multiplex(int n) { //com1 = decena, com2 = unidad
     int decena = n/10;
     int unidad = n%10;
-    disp7seg(decena);
-    digitalWrite(com1, HIGH); //turns on the first display
-    digitalWrite(com2, LOW); // off second display
-    delay(10);
-    disp7seg(unidad);
-    digitalWrite(com1, LOW); //turns off the first display
-    digitalWrite(com2, HIGH); //turns on the second display
-    delay(10);
+    digitalWrite(com2, HIGH); // apaga display de la unidad
+    disp7seg(decena);	   // muestra decena
+    digitalWrite(com1, LOW); // enciende display decena
+    delay(4);
+    digitalWrite(com1, HIGH); // apaga display decena
+    disp7seg(unidad);	    // muestra unidad
+    digitalWrite(com2, LOW); // enciende display unidad
+    delay(4);
 }
 
 void setup(){
@@ -91,8 +82,6 @@ void setup(){
 // BOTON 1: Comienza cuenta regresiva desde 24
 // BOTON 2: Pausa y reanuda cuenta regresiva
 
-double t = millis();
-
 void loop(){
     estado1 = digitalRead(boton1);
     estado2 = digitalRead(boton2);
@@ -106,14 +95,16 @@ void loop(){
             counting = !counting;
         }
     
-    if (counting and millis() - t >= disp * 1000) {
+    if (counting and (millis() - lastTime >= 1000)) { //
         digitalWrite(buzzer,LOW);
         multiplex(disp);
         if (disp == 0) {
             digitalWrite(buzzer, HIGH);
             counting = false;
+        } else {
+            disp--;
         }
-        disp--;
+      lastTime = millis();
     }
     estado1_anterior = estado1;
     estado2_anterior = estado2;
