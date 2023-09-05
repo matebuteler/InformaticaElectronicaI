@@ -27,11 +27,13 @@ int n = 0;
 void setup() {
     pinMode(RED, OUTPUT);
     pinMode(GREEN, OUTPUT);
-    pinMode(BLUE, OUTPUT)
+    pinMode(BLUE, OUTPUT);
+    pinMode(p1, INPUT);
+    pinMode(p2, INPUT);
 }
 
 void loop() {
-    while (n < 9) {
+    while (n < 8) {
         digitalWrite(RED, (n = 1 || n = 4 || n = 6 || n = 7));
         digitalWrite(GREEN, (n = 2 || n = 4 || n = 5 || n = 7));
         digitalWrite(BLUE, (n = 3 || n = 5 || n = 6 || n = 7));
