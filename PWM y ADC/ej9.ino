@@ -18,18 +18,24 @@
 #define GREEN 2
 #define BLUE 3
 #define p1 4
+#define p2 5
 
-bool p1_ant = 0
-int n = 0
+bool p1_ant = 0;
+bool p2_ant = 0;
+int n = 0;
+
 void setup() {
-    pinMode(RED) ...
+    pinMode(RED, OUTPUT);
+    pinMode(GREEN, OUTPUT);
+    pinMode(BLUE, OUTPUT)
 }
 
 void loop() {
-    if (p1 and !p1_ant)  {
+    while (n < 9) {
         digitalWrite(RED, (n = 1 || n = 4 || n = 6 || n = 7));
         digitalWrite(GREEN, (n = 2 || n = 4 || n = 5 || n = 7));
         digitalWrite(BLUE, (n = 3 || n = 5 || n = 6 || n = 7));
-        n++;
+        if (p1 and !p1_ant) n++; 
+        if (p2 and !p2_ant) n--;
     }
 }
