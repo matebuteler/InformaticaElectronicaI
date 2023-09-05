@@ -32,15 +32,6 @@ bool estado1_anterior;
 bool estado2_anterior;
 
 void disp7seg(int n){
-  // se asegura de que todos los pines estén en 0
-  digitalWrite(LED_a,0);
-  digitalWrite(LED_b,0);
-  digitalWrite(LED_c,0);
-  digitalWrite(LED_d,0);
-  digitalWrite(LED_e,0);
-  digitalWrite(LED_f,0);
-  digitalWrite(LED_g,0);
-
   digitalWrite(LED_a, (n != 1 && n != 6 && n != 4));
   digitalWrite(LED_b, (n != 5 && n != 6));
   digitalWrite(LED_c, (n != 2));
@@ -48,7 +39,7 @@ void disp7seg(int n){
   digitalWrite(LED_e, (n != 1 && n != 3 && n != 4 && n != 5 && n != 7 && n != 9));
   digitalWrite(LED_f, (n != 1 && n != 2 && n != 3 && n != 7));
   digitalWrite(LED_g, (n != 0 && n != 1 && n != 7));
-  }
+}
 
 
 void multiplex(int n) { //com1 = decena, com2 = unidad

@@ -1,6 +1,7 @@
-// Continuando con el ejercicio anterior hacer una función que permita
-// mostrar de forma porcentual el valor del potenciómetro en el par de
-// displays 7 segmentos de la placa.
+// Modificar el programa anterior agregando una función para que muestre
+// la temperatura por medio de los display 7 segmentos. Realizar otra
+// función que encienda un led cuando la temperatura supere los 28C.
+
 #define LED_a 0
 #define LED_b 1
 #define LED_c 2
@@ -10,12 +11,10 @@
 #define LED_g 6
 #define com1 7
 #define com2 8
-#define pot A3
+#define LED_28 9
+#define lm35 A1
 #include <Arduino.h>
-
-unsigned long lastTime = 0;
-
-bool counting = false; 
+float temp
 
 void setup() {
     pinMode(LED_a,OUTPUT);
@@ -27,7 +26,7 @@ void setup() {
     pinMode(LED_g,OUTPUT);
     pinMode(com1,OUTPUT);
     pinMode(com2,OUTPUT);
-//    pinMode(pot,INPUT);
+    pinMode(LED_28, OUTPUT);
 }
 
 void disp7seg(int n){
@@ -38,7 +37,7 @@ void disp7seg(int n){
   digitalWrite(LED_e, (n != 1 && n != 3 && n != 4 && n != 5 && n != 7 && n != 9));
   digitalWrite(LED_f, (n != 1 && n != 2 && n != 3 && n != 7));
   digitalWrite(LED_g, (n != 0 && n != 1 && n != 7));
-  }
+}
 
 
 void multiplex(int n) { //com1 = decena, com2 = unidad
@@ -54,8 +53,16 @@ void multiplex(int n) { //com1 = decena, com2 = unidad
     delay(4);
 }
 
+void supera28(int temp) { //funcion para ver si supera 28 (innecesario que sea una funcion aparte pero se hace por conformidad con la consigna)
+    if (temp > 28) {
+        digitalWrite(LED_28, 1);
+    }
+}
+
 void loop() {
-    int valor = analogRead(pot);
-    multiplex((valor *100)/ 1023); 
+    temp = ((analogRead(lm35) * 4.9 )/ 10); //4.9mv es la resolucion del arduino (5v / 1024)
+    multiplex(temp); 
+    supera28(temp);
     delay(100);
+
 }
