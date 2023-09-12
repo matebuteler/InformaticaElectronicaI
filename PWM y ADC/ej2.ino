@@ -1,16 +1,17 @@
 // Continuando con el ejercicio anterior hacer una función que permita
 // mostrar de forma porcentual el valor del potenciómetro en el par de
 // displays 7 segmentos de la placa.
-#define LED_a 0
-#define LED_b 1
-#define LED_c 2
-#define LED_d 3
-#define LED_e 4
-#define LED_f 5
-#define LED_g 6
-#define com1 7
-#define com2 8
-#define pot A3
+#define LED_a 6
+#define LED_b 7
+#define LED_c 8
+#define LED_d 2 //9 no anda
+#define LED_e 10
+#define LED_f 11
+#define LED_g 12
+#define com1 5
+#define com2 4
+
+
 #include <Arduino.h>
 
 unsigned long lastTime = 0;
@@ -51,11 +52,11 @@ void multiplex(int n) { //com1 = decena, com2 = unidad
     digitalWrite(com1, HIGH); // apaga display decena
     disp7seg(unidad);	    // muestra unidad
     digitalWrite(com2, LOW); // enciende display unidad
-    delay(4);
+    delay(8);
 }
 
 void loop() {
-    int valor = analogRead(pot);
-    multiplex((valor *100)/ 1023); 
+    int valor = (analogRead(A3) * 100)/1023;
+    multiplex(valor); 
     delay(100);
 }
