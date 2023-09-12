@@ -23,7 +23,6 @@
 #define p1 13
 #define LED_100 3
 // lm35 está en A3
-#include <Arduino.h>
 float temp;
 bool p1_ant;
 bool celsius = 1;

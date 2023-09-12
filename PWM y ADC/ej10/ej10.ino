@@ -28,5 +28,5 @@ void color(int n) { //1 = Rojo; 2= Verde; 3=Azul; 4= Amarillo; 5= Celeste; 6= Vi
 }
 
 void loop() {
-    color(analogRead(pot)/150) / 
+    color(analogRead(pot)/150);
 }
